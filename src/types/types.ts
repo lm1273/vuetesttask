@@ -26,3 +26,11 @@ export interface ComputedStep extends Step {
     completed: number         // utolsó.proceeds
     problemStepIndex: number
   }
+
+  export interface Campaign {
+    id: string
+    name: string
+    device: string
+    steps: Step[]
+  }
+  
