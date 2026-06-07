@@ -1,5 +1,7 @@
 <script setup lang="ts">
+  import { funnel } from './utils/funnel';
 
+  funnel();
 </script>
 
 <template>
