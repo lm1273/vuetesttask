@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { ComputedStep } from '../types/types'
 import { formatPercent, formatNumber } from '../utils/format'
 
-defineProps<{ step: ComputedStep; isLast: boolean }>()
+const props = defineProps<{ step: ComputedStep; isLast: boolean }>()
+
+// A számot csak akkor írjuk a sávra (fehéren), ha elég széles hozzá.
+// Keskeny sávnál a sávon KÍVÜL, sötét betűvel jelenítjük meg → mindig olvasható.
+const labelInside = computed(() => props.step.reachedShare >= 0.2)
+const barWidth = computed(() => Math.max(props.step.reachedShare * 100, 2) + '%')
 </script>
 
 <template>
@@ -17,16 +23,25 @@ defineProps<{ step: ComputedStep; isLast: boolean }>()
       </span>
     </div>
 
-    <div class="h-8 w-full overflow-hidden rounded-md bg-gray-100">
+    <div class="relative h-8 w-full overflow-hidden rounded-md bg-gray-100">
+      <!-- Maga a színes sáv (csak vizuális, szöveg nélkül). -->
       <div
-        class="flex h-full items-center rounded-md px-2 text-xs font-semibold text-white"
+        class="h-full rounded-md"
         :class="step.isProblem ? 'bg-red-500' : 'bg-blue-500'"
-        :style="{ width: Math.max(step.reachedShare * 100, 6) + '%' }"
+        :style="{ width: barWidth }"
+      ></div>
+
+      <!-- A megtekintések száma: a sávon belül (fehér) ha fér, különben mellette (sötét). -->
+      <span
+        class="absolute inset-y-0 flex items-center px-2 text-xs font-semibold"
+        :class="labelInside ? 'left-0 justify-end text-white' : 'text-gray-700'"
+        :style="labelInside ? { width: barWidth } : { left: barWidth }"
       >
         {{ formatNumber(step.views) }}
-      </div>
+      </span>
     </div>
 
+    <!-- Az utolsó lépés alatt nincs drop: nincs hová tovább lépni. -->
     <p v-if="!isLast" class="mt-1 mb-3 text-xs text-red-600">
       ↓ {{ formatNumber(step.droppedUsers) }} ember elveszik ({{ formatPercent(step.dropoffRate) }})
     </p>
