@@ -106,4 +106,6 @@ el tudok magyarázni.
   szabályok megtartásával).
 - **Komponens/E2E tesztek**, és a most fix küszöbök **konfigurálhatóvá** tétele. Bővítés Playwright tesztekkel.
 - **Tooltip-ek** Egyszerűbb magyarázatok ha ráviszi a felhasználó pl az egerét az adott elemre.
+- **Darkmode** Amit megszokhattunk a modernebb szoftvereknél amit napilag sokat használnak.
+- **Localizations** Fontos szerintem a többnyelvűség is hogy nagyobb csoportot segíthessen az eszköz nyelvi akadályok nélkül.
 
